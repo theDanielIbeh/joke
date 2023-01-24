@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Jokes</string>
+    <string name="select_category_hint">Select Categor(y/ies)</string>
+    <string name="select_flag_hint">Select Flag(s)</string>
+    <string name="any">Any</string>
+    <string name="custom">Custom</string>
+    <string name="next">Next</string>
+    <string name="category_field_error">Please select at least one category</string>
+    <string name="configure_joke">Configure Joke</string>
+</resources>
