@@ -1,5 +1,6 @@
 package com.example.jokes.data.joke
 
+import androidx.paging.PagingSource
 import androidx.room.*
 
 @Dao
@@ -14,7 +15,10 @@ interface JokeDao {
     fun deleteJokeByIdTest(id: Int)
 
     @Query("SELECT * FROM joke_table WHERE id = :id")
-    fun getJokeByIdTest(id: Int):Joke?
+    fun getJokeByIdTest(id: Int): Joke?
+
+    @Query("SELECT * FROM joke_table")
+    fun getAllJokesPagingData(): PagingSource<Int, Joke>
 
     @Query("DELETE FROM joke_table")
     fun clear()
