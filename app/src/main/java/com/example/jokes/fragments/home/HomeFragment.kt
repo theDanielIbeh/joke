@@ -7,9 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.jokes.R
+import com.example.jokes.data.joke.Joke
 import com.example.jokes.databinding.FragmentHomeBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
 
@@ -40,6 +45,23 @@ class HomeFragment : Fragment() {
         }
         binding.configureButton.setOnClickListener {
             navigate()
+        }
+        binding.favouritesButton.setOnClickListener {
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    viewModel.joke.value?.let { it ->
+                        Joke(
+                            category = it.category,
+                            type = it.type,
+                            joke = it.joke,
+                            setup = it.setup,
+                            delivery = it.delivery
+                        )
+                    }?.let { it ->
+                        viewModel.insertJoke(it)
+                    }
+                }
+            }
         }
 
         return binding.root

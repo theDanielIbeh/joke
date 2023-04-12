@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.jokes.data.joke.Joke
+import com.example.jokes.data.joke.JokeRepository
 import com.example.jokes.network.JokesApi
 import com.example.jokes.network.responses.JokeResponse
 import com.example.jokes.utils.Constants
@@ -14,7 +16,7 @@ import kotlinx.coroutines.launch
 
 
 class HomeViewModel(private val application: Application) : ViewModel() {
-
+    private val jokeRepository: JokeRepository = JokeRepository(application.applicationContext)
     private val settings: SharedPreferences = application.getSharedPreferences("JokeSettings", 0)
 
     val categoryType: String? = settings.getString(Constants.CATEGORY_TYPE, "Any")
@@ -43,6 +45,10 @@ class HomeViewModel(private val application: Application) : ViewModel() {
                 Log.e("Failure: ", "${e.message}")
             }
         }
+    }
+
+    fun insertJoke(joke: Joke) {
+        jokeRepository.insert(joke)
     }
 
     class HomeViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
