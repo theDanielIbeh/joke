@@ -1,6 +1,8 @@
 package com.example.jokes.fragments.home
 
 import android.app.ProgressDialog
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -90,5 +92,10 @@ class HomeFragment : Fragment() {
 
     private fun navigate() {
         findNavController().navigate(R.id.settingsFragment)
+    }
+
+    private fun isNetworkConnected(): Boolean {
+        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        return cm?.activeNetworkInfo != null && cm.activeNetworkInfo?.isConnected == true
     }
 }
