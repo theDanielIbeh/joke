@@ -47,8 +47,18 @@ class HomeViewModel(private val application: Application) : ViewModel() {
         }
     }
 
-    fun insertJoke(joke: Joke) {
-        jokeRepository.insert(joke)
+    suspend fun insertJoke() {
+        joke.value?.let { it ->
+            Joke(
+                category = it.category,
+                type = it.type,
+                joke = it.joke,
+                setup = it.setup,
+                delivery = it.delivery
+            )
+        }?.let { it ->
+            jokeRepository.insert(it)
+        }
     }
 
     class HomeViewModelFactory(private val application: Application) : ViewModelProvider.Factory {

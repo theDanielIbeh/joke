@@ -12,11 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.jokes.R
-import com.example.jokes.data.joke.Joke
 import com.example.jokes.databinding.FragmentHomeBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
 
@@ -50,19 +47,7 @@ class HomeFragment : Fragment() {
         }
         binding.favouritesButton.setOnClickListener {
             lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    viewModel.joke.value?.let { it ->
-                        Joke(
-                            category = it.category,
-                            type = it.type,
-                            joke = it.joke,
-                            setup = it.setup,
-                            delivery = it.delivery
-                        )
-                    }?.let { it ->
-                        viewModel.insertJoke(it)
-                    }
-                }
+                viewModel.insertJoke()
             }
         }
 
@@ -95,7 +80,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun isNetworkConnected(): Boolean {
-        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val cm =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
         return cm?.activeNetworkInfo != null && cm.activeNetworkInfo?.isConnected == true
     }
 }

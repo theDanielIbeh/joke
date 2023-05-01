@@ -11,7 +11,7 @@ import com.example.jokes.data.JokeDatabase
 class JokeRepository(context: Context) {
     private val database= JokeDatabase.getInstance(context)
 
-    fun insert(joke: Joke) {
+    suspend fun insert(joke: Joke) {
         database.jokeDao.insert(joke)
     }
 

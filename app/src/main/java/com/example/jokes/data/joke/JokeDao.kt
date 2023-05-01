@@ -6,7 +6,7 @@ import androidx.room.*
 @Dao
 interface JokeDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(joke: Joke)
+    suspend fun insert(joke: Joke)
 
     @Delete
     fun delete(joke: Joke)
