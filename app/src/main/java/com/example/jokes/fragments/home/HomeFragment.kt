@@ -6,7 +6,10 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -59,27 +62,45 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.home_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setMenu()
+        super.onViewCreated(view, savedInstanceState)
     }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
-            R.id.favourites_item -> {
-                Navigation.findNavController(requireActivity(), R.id.my_nav_host_fragment)
-                    .navigate(R.id.favouritesFragment)
-                true
+
+    private fun setMenu() {
+        // The usage of an interface lets you inject your own implementation
+        val menuHost: MenuHost = requireActivity()
+
+        // Add menu items without using the Fragment Menu APIs
+        // Note how we can tie the MenuProvider to the viewLifecycleOwner
+        // and an optional Lifecycle.State (here, RESUMED) to indicate when
+        // the menu should be visible
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // Add menu items here
+                menuInflater.inflate(R.menu.home_menu, menu)
             }
-            R.id.share_item -> {
-                shareJoke()
-                true
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                // Handle the menu selection
+                return when (menuItem.itemId) {
+                    R.id.favourites_item -> {
+                        Navigation.findNavController(requireActivity(), R.id.my_nav_host_fragment)
+                            .navigate(R.id.favouritesFragment)
+                        true
+                    }
+                    R.id.share_item -> {
+                        shareJoke()
+                        true
+                    }
+                    else -> false
+                }
             }
-            else -> super.onOptionsItemSelected(item)
-        }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun shareJoke() {
-        val joke = if (viewModel.joke.value?.type  == "single") {
+        val joke = if (viewModel.joke.value?.type == "single") {
             viewModel.joke.value?.joke
         } else {
             "${viewModel.joke.value?.setup}\n${viewModel.joke.value?.delivery}"
