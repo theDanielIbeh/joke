@@ -53,11 +53,6 @@ class HomeFragment : Fragment() {
         binding.configureButton.setOnClickListener {
             navigate()
         }
-        binding.favouritesButton.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.insertJoke()
-            }
-        }
 
         return binding.root
     }
@@ -87,6 +82,15 @@ class HomeFragment : Fragment() {
                     R.id.favourites_item -> {
                         Navigation.findNavController(requireActivity(), R.id.my_nav_host_fragment)
                             .navigate(R.id.favouritesFragment)
+                        true
+                    }
+                    R.id.favourite_joke_item -> {
+                        lifecycleScope.launch {
+                            viewModel.insertJoke()
+                            viewModel.getJoke()
+                            Navigation.findNavController(requireActivity(), R.id.my_nav_host_fragment)
+                                .navigate(R.id.favouritesFragment)
+                        }
                         true
                     }
                     R.id.share_item -> {

@@ -4,6 +4,11 @@
     <item
         android:id="@+id/favourites_item"
         android:title="@string/favourites"
+        app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/favourite_joke_item"
+        android:title="@string/favourite_joke"
         android:icon="@drawable/favourite"
         app:showAsAction="ifRoom" />
 

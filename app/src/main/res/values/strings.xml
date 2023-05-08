@@ -9,5 +9,6 @@
     <string name="add_joke_to_favourites">Add To Favourites</string>
     <string name="configure_joke">Configure Joke</string>
     <string name="favourites">Favourites</string>
+    <string name="favourite_joke">Favourite Joke</string>
     <string name="share">Share</string>
 </resources>
