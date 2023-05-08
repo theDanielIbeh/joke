@@ -5,4 +5,9 @@
         android:id="@+id/favourites_item"
         android:title="@string/favourites"
         app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/share_item"
+        android:title="@string/share"
+        app:showAsAction="collapseActionView" />
 </menu>
