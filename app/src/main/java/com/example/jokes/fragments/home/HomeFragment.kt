@@ -2,6 +2,7 @@ package com.example.jokes.fragments.home
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.*
@@ -69,8 +70,27 @@ class HomeFragment : Fragment() {
                     .navigate(R.id.favouritesFragment)
                 true
             }
+            R.id.share_item -> {
+                shareJoke()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun shareJoke() {
+        val joke = if (viewModel.joke.value?.type  == "single") {
+            viewModel.joke.value?.joke
+        } else {
+            "${viewModel.joke.value?.setup}\n${viewModel.joke.value?.delivery}"
+        }
+
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, joke)
+        }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
     }
 
     private fun observeLiveDataValues() {
